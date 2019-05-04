@@ -8,12 +8,19 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -101,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            dialog.setMessage("Doing something, please wait.");
+            //dialog.setMessage("Doing something, please wait.");
             dialog.show();
         }
 
@@ -120,10 +127,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
+                // use http://www.mocky.io to allow random delays to be simulated
+                //
+                // /v2/5ccdac3e2e00005c15182ad5?mocky-delay=3000ms
+
+                URL url = new URL("http://www.mocky.io/v2/5ccdac3e2e00005c15182ad5?mocky-delay=3000ms");
+                URLConnection urlConnection = url.openConnection();
+                InputStream in = urlConnection.getInputStream();
+                IOUtils.copy(in, System.out);
+                //Thread.sleep(5000);  // or hard wired 5 second delay
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
+
 
             return null;
         }
