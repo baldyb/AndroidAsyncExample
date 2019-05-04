@@ -3,6 +3,7 @@ package com.example.testapp;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import org.apache.commons.io.IOUtils;
 
@@ -90,6 +92,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static ProgressDialog createProgressDialog(Context context) {
+        ProgressDialog dialog = new ProgressDialog(context);
+
+        dialog.show();
+
+        dialog.setCancelable(false);
+        dialog.getWindow()
+                .setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.transparentprogress);
+        // dialog.setMessage(Message);
+        return dialog;
+    }
+
     private class Test
     {
         int counter = 0;
@@ -103,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
         public BackgroundTask(MainActivity activity) {
             parent = activity;
-            dialog = new ProgressDialog(activity);
+            //dialog = new ProgressDialog(activity);
+            dialog = createProgressDialog(activity);
         }
 
         @Override
